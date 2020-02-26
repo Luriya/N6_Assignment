@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * @author David Cairns
  */
 @SuppressWarnings("serial")
-
+// TODO: Slight issue with player getting stuck in walls or being able to clip out of the map - might revisit if I have time
 public class Game extends GameCore implements ActionListener
 {
     private float lift = 0.005f; // lift (counteracts gravity)

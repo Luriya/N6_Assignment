@@ -18,7 +18,7 @@ public class Complete implements MouseListener // Game finished screen
         // Draw images to the screen
         ImageIcon complete_i = new ImageIcon("images/Icons/icon_game_complete.png"); // create new ImageIcon
         complete_icon = complete_i.getImage(); // fetch image
-        g.drawImage(complete_icon, 130, 50, null); // draw to screen
+        g.drawImage(complete_icon, 70, 50, null); // draw to screen
 
         ImageIcon return_b = new ImageIcon("images/Icons/icon_return.png");
         return_button = return_b.getImage();
