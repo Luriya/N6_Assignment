@@ -1,0 +1,50 @@
+64 22 32 32
+// The first line should contain the width and height of the
+// map and the width and height of each tile. A list of character to
+// tile mappings is then provided where each character is preceded by a
+// # character. The dot character always defaults to a blank space 
+// Note that the referenced files should be in the same directory as the
+// tile map.
+#*=dot.png
+#h=heart_pickup.png
+#l=lava.png
+#g=ground.png
+#u=underground.png
+#q=left_platform.png
+#w=left_wall_bottom.png
+#s=left_wall_top.png
+#p=right_platform.png
+#o=right_wall_bottom.png
+#k=right_wall_top.png
+#1=greenGem.png
+#2=redGem.png
+#3=blueGem.png
+#4=purpleGem.png
+#5=whiteGem.png
+// The actual tile map is preceded by the #map line
+#map
+uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+o..............................................................w
+o..............................................................w
+o...................252.......qp...............................w
+o........qp...qggggggggggggp........qggp.......................w
+o...qp.........................................................w
+o.........................................................11111w
+o.......qgp..............................................1gggggu
+o.............qp........................................1guuuuuu
+o.................................................11...1guuuuuuu
+o...11111..gg...ggg11...........................1.gg..gguuuuuuuu
+ugggggggggguullluuugg11...22..22..............1.ggllllluuuuuuuuu
+uuuuuuuuuuulllllluuuugg111..11..11..........1.gguuuuuuuuuuuuuuuu
+uuuuuuuuuuuuluuuluuuuuugggllggllgg111...1.1ggglluuuuuuuuuuuuuuuu
+uuuu..uuuuuuluuuuuuuluuuuuuuuuuuugggk..sggguuuuuuuuuuuuuuuuuuuuu
+uuu...uuuuuuluuuuuuuluuuuuuuuuuuuuuuo..wuuuuuuuuuuuuuuuuuuu.....
+uuuu..uuuuuuuuuuuuuuluu................wuuuuuuuuuuuuuuuuuuuu....
+uuuu..uuuuuuuuuuuuuuluuh33.............wuuuuuuuuuuuuuuuuuuuuu...
+uuuu..uuuuuuuuuuuulluuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+uuuuu..uuuuuuuuuuluuuuuuuuuuuuuuuuuuuuuu.....uuuuuuuuuuuuuuuuuuu
+uuuuuu..uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+
+
+

@@ -1,0 +1,51 @@
+64 22 32 32
+// The first line should contain the width and height of the
+// map and the width and height of each tile. A list of character to
+// tile mappings is then provided where each character is preceded by a
+// # character. The dot character always defaults to a blank space 
+// Note that the referenced files should be in the same directory as the
+// tile map.
+#*=dot.png
+#h=heart_pickup.png
+#l=lava.png
+#g=ground.png
+#u=underground.png
+#q=left_platform.png
+#w=left_wall_bottom.png
+#s=left_wall_top.png
+#p=right_platform.png
+#o=right_wall_bottom.png
+#k=right_wall_top.png
+#1=greenGem.png
+#2=redGem.png
+#3=blueGem.png
+#4=purpleGem.png
+#5=whiteGem.png
+#/=left_slope_low.png
+#?=left_slope_high.png
+// The actual tile map is preceded by the #map line
+#map
+uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+o..............................................................w
+o....5.........................................................w
+o....g.........................................................w
+o........................................11...2...2.....11/?gggu
+o...ggg................................/?gg...g...g....ggguuuuuu
+o.........1111....2.....3.....33...../?uuuu...u...u....uuuuuuuuu
+o....111/?gggg...qgp...qgp....qp....qpuuuuu...u...u....uuuuuuuuu
+o../?ggguuuuuu...uuu...uuu....uu....uuuuuuu...u...u.qp.uuuuuuuuu
+ugguuuuuuuuuuu...uuu...uuulllluulllluuuuuuu...u...u....uuuuuuuuu
+uuuuuuuuuuuuuu...uuu...uuulllluulllluuuuuuu...u...u....uuuuuuuuu
+uuuuuuuuuuuuuu...uuu...uuulllluulllluuuuuuu...u...u.qp.uuuuuuuuu
+uuuuuuuuuuuuuu...uuu...uuuuuullllllluuuuuuu............uuuuuuuuu
+uuuuuuuuuuuuuu...uuu...uuuuuuuuuuuuuuuuuuuuuuuu........uuuuuuuuu
+uuuuuuuuuuuuuu...uuu...uuuuuuuuuuuuuuuuuuuuuuuu.....qp.uuuuuuuuu
+uuuuuuuuuuuuuu...uuu.......................................33uuu
+uuuuuuuuuuuuuu...uuuuuuuuuuuuuuuuuuuuuuuuuuuuuu............uuuuu
+uuuuuuuuuuuuuu...uuuuuuuuuuuuuuuuuuuuuuuuuuuuuu.....qp.......uuu
+uuuu...uuuuuuu...uuuuuuuuuuuuuuuuuuuuuuuuuuuuuu..............uuu
+uuuu.......................................................22uuu
+uuuuh5uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuullluuuuuuuuuuuuu
+uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+
+
