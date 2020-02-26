@@ -33,7 +33,8 @@ bbbbbbbbbb
 }
  * @author David Cairns
  */
-public class TileMap 
+@SuppressWarnings({"BooleanMethodIsAlwaysInverted", "UnusedReturnValue"})
+public class TileMap
 {
 
 	private Tile[][] tmap;		// The tile map grid, initially null
@@ -44,7 +45,7 @@ public class TileMap
 	
 	// imagemap contains a set of character to image mappings for
 	// quick loop up of the image associated with a given character.
-	private Map<String,Image> imagemap = new HashMap<String,Image>();
+	private final Map<String,Image> imagemap = new HashMap<>();
 	
 	/**
 	 * @return The map height in tiles
@@ -96,6 +97,7 @@ public class TileMap
 	 * @param mapfile The name of the map file in the map folder
 	 * @return true if the map loaded successfully, false otherwise
 	 */
+	@SuppressWarnings({"StringOperationCanBeSimplified", "UnusedReturnValue"})
 	public boolean loadMap(String folder, String mapfile)
 	{
 		// Create a full path to the tile map by sticking the folder and mapfile together
@@ -105,7 +107,7 @@ public class TileMap
 		try
 		{
 			BufferedReader in = new BufferedReader(new FileReader(path));
-			String line="";
+			String line;
 			String trimmed="";
 			String [] vals;
 			
@@ -156,7 +158,7 @@ public class TileMap
 				}
 			}
 			
-			// Check the map dimensione are at least > 0
+			// Check the map dimensions are at least > 0
 			if ((mapWidth > 0) && (mapHeight > 0))
 			{
 				tmap = new Tile[mapWidth][mapHeight];
@@ -213,7 +215,7 @@ public class TileMap
 	 */
 	public String toString()
 	{
-		StringBuffer s = new StringBuffer();
+		StringBuilder s = new StringBuilder();
 		for (int r=0; r<mapHeight; r++)
 		{
 			for (int c=0; c<mapWidth; c++)
@@ -330,7 +332,7 @@ public class TileMap
 	{
 		if (g == null) return;
 	
-		Image img=null;
+		Image img;
 		Rectangle rect = (Rectangle)g.getClip();
 		int xc,yc;
 		

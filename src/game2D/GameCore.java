@@ -7,13 +7,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
-
 /**
  * @author David Cairns
  * 
  * Core Game class that implements default game loop. Subclasses should
  * implement the draw() method and override the update method.
 */
+@SuppressWarnings("CatchMayIgnoreException")
 public abstract class GameCore extends JFrame implements KeyListener,ActionListener {
 
 	private static final long serialVersionUID = 1L;
@@ -27,13 +27,10 @@ public abstract class GameCore extends JFrame implements KeyListener,ActionListe
     private boolean fullScreen;			// true if the game is in full screen mode
     private	long startTime;				// The time the game started
     private long currTime;				// The current time
-    private long elapsedTime;			// Elapsed time since previous check
-    
+
     private long frames;				// Used to calculate frames per second (FPS)
     private Window win;					// Window object used to handle the display
-    
-    private BufferedImage buffer=null;	// buffer is used as a buffered image for drawing offscreen
-    private Graphics2D bg=null;    		// The virtual Graphics2D device associated with the above image
+
     private JButton start;
     
     /**
@@ -50,8 +47,6 @@ public abstract class GameCore extends JFrame implements KeyListener,ActionListe
         currTime = 1;
     }
 
-
-
     /** 
      * Signals the game loop that it's time to quit 
      * 
@@ -60,7 +55,6 @@ public abstract class GameCore extends JFrame implements KeyListener,ActionListe
     { 
     	isRunning = false; 
     }
-
 
     /** 
      * Starts the game by first initialising the game via init()
@@ -71,15 +65,8 @@ public abstract class GameCore extends JFrame implements KeyListener,ActionListe
      * @param y Height of screen in pixels
      */
     public void run(boolean full, int x, int y) {
-        try 
-        {
-            init(full,x,y);
-            gameLoop();
-        }
-        finally 
-		{ 
-        	
-        }
+        init(full,x,y);
+        gameLoop();
     }
 
     /**
@@ -114,7 +101,7 @@ public abstract class GameCore extends JFrame implements KeyListener,ActionListe
     /**
      * Shows and hides the main game window
      * 
-     * @param true to show the game window, false to hide
+     * @param show true to show the game window, false to hide
      * 
      */
     public void setVisible(boolean show)
@@ -155,6 +142,7 @@ public abstract class GameCore extends JFrame implements KeyListener,ActionListe
      *  method to display the updated game state. It implements double buffering
      *  for both full screen and windowed mode.
      */
+    @SuppressWarnings("CatchMayIgnoreException")
     public void gameLoop() {
         startTime = System.currentTimeMillis();
         currTime = startTime;
@@ -164,12 +152,15 @@ public abstract class GameCore extends JFrame implements KeyListener,ActionListe
         isRunning = true;
         
         // Create our own buffer
-        buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-        bg = (Graphics2D)buffer.createGraphics();
+        // buffer is used as a buffered image for drawing offscreen
+        BufferedImage buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+        // The virtual Graphics2D device associated with the above image
+        Graphics2D bg = buffer.createGraphics();
         bg.setClip(0, 0, getWidth(), getHeight());
         
         while (isRunning) {
-            elapsedTime = System.currentTimeMillis() - currTime;
+            // Elapsed time since previous check
+            long elapsedTime = System.currentTimeMillis() - currTime;
             currTime += elapsedTime;
 
             // Call the overridden update method

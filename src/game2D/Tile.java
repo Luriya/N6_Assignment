@@ -8,9 +8,9 @@ package game2D;
  */
 public class Tile {
 
-	private char character=' ';	// The character associated with this tile
-	private int xc=0;			// The tile's x coordinate in pixels
-	private int yc=0;			// The tile's y coordinate in pixels
+	private char character;	// The character associated with this tile
+	private final int xc;			// The tile's x coordinate in pixels
+	private final int yc;			// The tile's y coordinate in pixels
  	
 	/**
 	 * Create an instance of a tile

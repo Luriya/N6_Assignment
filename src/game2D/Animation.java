@@ -15,14 +15,14 @@ import java.util.ArrayList;
 */
 public class Animation {
 
-    private ArrayList<AnimFrame> frames;	// The set of animation frames
+    private final ArrayList<AnimFrame> frames;	// The set of animation frames
     private int currFrameIndex;				// Current frame animation is on
     private long animTime;					// Current animation time
     private long totalDuration;				// Total animation time
     private float animSpeed = 1.0f;			// Animation speed, e.g. 2 will be twice as fast
     
     private boolean loop = true;			// True if the animation should continue looping
-    private boolean looped = false;			// True if 1 animation loop has been completed
+    private boolean looped;			// True if 1 animation loop has been completed
     private boolean play = true;			//	True if the animation should animate
     private int stopFrame = -1;				// A frame to stop on, if < 0 it is ignored
 
@@ -30,7 +30,7 @@ public class Animation {
      * Creates a new, empty Animation.
      */
     public Animation() {
-        frames = new ArrayList<AnimFrame>();
+        frames = new ArrayList<>();
         totalDuration = 0;
         looped = false;
         start();
@@ -130,7 +130,7 @@ public class Animation {
      * @return The animation frame corresponding to the index
      */
     private AnimFrame getFrame(int i) {
-        return (AnimFrame)frames.get(i);
+        return frames.get(i);
     }
 
     /**
@@ -179,11 +179,10 @@ public class Animation {
     {
     	Image sheet = new ImageIcon(fileName).getImage();
     	Image[] images = getImagesFromSheet(sheet, columns, rows);
-    	
-    	for (int i=0; i<images.length; i++)
-    	{
-    		addFrame(images[i], frameDuration);
-    	}
+
+        for (Image image : images) {
+            addFrame(image, frameDuration);
+        }
     }
     
 
@@ -192,10 +191,10 @@ public class Animation {
      * Loads a set of images from a sprite sheet so that they can be added to an animation.
      * Courtesy of Donald Robertson.
      * 
-     * @param sheet
-     * @param rows
-     * @param columns
-     * @return
+     * @param sheet the spritesheet
+     * @param rows the rows in the spritesheet
+     * @param columns the columns in the spritesheet
+     * @return the split sheet
      */
     private Image[] getImagesFromSheet(Image sheet, int columns, int rows) {
 
@@ -251,7 +250,7 @@ public class Animation {
     
     /**
      * Pause the animation at given 'frame'
-     * @param frame
+     * @param frame the frame to pause at
      */
     public void pauseAt(int frame)
     {
@@ -295,10 +294,10 @@ public class Animation {
      * animation frame.
      * 
      */
-    private class AnimFrame {
+    private static class AnimFrame {
 
-        Image image;	// The image for a frame.
-        long endTime;	// The time at which this frame ends.
+        final Image image;	// The image for a frame.
+        final long endTime;	// The time at which this frame ends.
 
         /**
          * Create a new frame with the given image and end time.

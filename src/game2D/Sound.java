@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class Sound extends Thread {
 
-	String filename;	// The name of the file to play
+	final String filename;	// The name of the file to play
 	boolean finished;	// A flag showing that the thread has finished
 	
 	public Sound(String fname) {
@@ -21,6 +21,7 @@ public class Sound extends Thread {
 	 * eventually be called by 'start' when it has been scheduled by
 	 * the process scheduler.
 	 */
+	@SuppressWarnings("CatchMayIgnoreException")
 	public void run() {
 		try {
 			File file = new File(filename);
@@ -41,19 +42,21 @@ public class Sound extends Thread {
 
 	}
 
-    public void playTheme() throws IOException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException {
-        AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("sounds/theme.wav"));
-        Clip clip = AudioSystem.getClip();
-        clip.open(inputStream);
+    public void playTheme() throws IOException, UnsupportedAudioFileException, LineUnavailableException, InterruptedException // play the theme tune
+	{
+        AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("sounds/theme.wav")); // load theme
+        Clip clip = AudioSystem.getClip(); // create a clip of this file
+        clip.open(inputStream); // add it to an inputStream
         FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        gainControl.setValue(-5.0f); // Reduce volume by 10 decibels.
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        gainControl.setValue(-5.0f); // Reduce volume to an acceptable level!
+        clip.loop(Clip.LOOP_CONTINUOUSLY); // loop the song as long as the game is running
         Thread.sleep(10000); // looping as long as this thread is alive
-    }
+    } // playTheme
 
-    public void echo(String fname) {
+    public void echo(String fname) // Method to call the echo effect
+	{
         String[] arguments = {fname};
         EchoSamplesPlayer.main(arguments);
-    }
+    } // echo
 }
 

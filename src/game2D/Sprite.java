@@ -22,9 +22,6 @@ public class Sprite {
     private float dx;
     private float dy;
 
-    // Dimensions of the sprite
-    private float height;
-    private float width;
     private float radius;
 
     // The scale to draw the sprite at where 1 equals normal size
@@ -52,7 +49,7 @@ public class Sprite {
     /**
      *  Creates a new Sprite object with the specified Animation.
      *  
-     * @param a The animation to use for the sprite.
+     * @param anim The animation to use for the sprite.
      * 
      */
     public Sprite(Animation anim) {
@@ -139,15 +136,16 @@ public class Sprite {
         Updates this Sprite's Animation and its position based
         on the elapsedTime.
         
-        @param The time that has elapsed since the last call to update
+        @param elapsedTime The time that has elapsed since the last call to update
     */
     public void update(long elapsedTime) {
     	if (!render) return;
         x += dx * elapsedTime;
         y += dy * elapsedTime;
         anim.update(elapsedTime);
-        width = anim.getImage().getWidth(null);
-        height = anim.getImage().getHeight(null);
+        float width = anim.getImage().getWidth(null);
+        // Dimensions of the sprite
+        float height = anim.getImage().getHeight(null);
         if (width > height)
         	radius = width / 2.0f;
         else
@@ -359,51 +357,70 @@ public class Sprite {
     	xoff = x;
     	yoff = y;
     }
+
+    // set a sprite's spawn x coordinate
     public void setSpawnX(int x)
     {
     	spawnX = x;
     	setX(x);
     }
+
+    // get the spawnX coordinate
     public int getSpawnX()
     {
     	return spawnX;
     }
+
+    // set a sprite's spawn y coordinate
     public void setSpawnY (int y)
     {
     	spawnY = y;
     	setY(y);
     }
+
+    // get the spawnY coordinate
     public int getSpawnY()
     {
     	return spawnY;
     }
 
+    // get the direction the sprite is travelling (true for right, false for left)
     public boolean getDirection() 
     {
         return direction;
     }
 
+    // set the new direction of the sprite
     public void setDirection(boolean direction) 
     {
         this.direction = direction;
     }
-    
-    public boolean getPlayerDirection() {
+
+    // get the direction the player is travelling
+    public boolean getPlayerDirection()
+    {
         return getVelocityX() >= 0;
     }
 
+    // set the minimum patrol range for the enemy sprite
     public void setMinPatrol(int min)
     {
         minPatrol = min;
     }
+
+    // fetch minimum patrol value
     public int getMinPatrol()
     {
         return minPatrol;
     }
+
+    // set the maximum patrol range for the enemy sprite
     public void setMaxPatrol(int max)
     {
         maxPatrol = max;
     }
+
+    // fetch maximum patrol value
     public int getMaxPatrol()
     {
         return maxPatrol;

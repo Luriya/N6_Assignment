@@ -1,7 +1,4 @@
 package game2D;
-// EchoSamplesPlayer.java
-// Andrew Davison, April 2005, ad@fivedots.coe.psu.ac.th
-
 
 /* The entire sound file is read in as a byte array, samples[]
    via an AudioInputStream. An echo audio effect is then applied
@@ -14,45 +11,44 @@ package game2D;
 
    To simplify the coding, the effect is only applied to 8-bit
    PCM signed/unsigned audio.
-
-   I've coded this in a C-style, as a series of static methods
-   and static globals. But the approach works inside classes/objects
-   as well.
 */
 
-
+// Adapted from the example in Killer Game Programming in Java by Andrew Jackson
 import javax.sound.sampled.*;
 import java.io.*;
-
 
 public class EchoSamplesPlayer {
     private static final int ECHO_NUMBER = 4;   // how many echoes to add
     private static final double DECAY = 0.5;    // the decay for each echo
 
-    private static AudioInputStream stream;
-    private static AudioFormat format = null;
-    private static SourceDataLine line = null;
+    private static AudioInputStream stream; // AudioInputStream
+    private static AudioFormat format = null; // AudioFormat
+    private static SourceDataLine line = null; // DataLine for the info to be passed through
 
 
-    public static void main(String[] args) {
-        if (args.length != 1) {
+    public static void main(String[] args)
+    {
+        if (args.length != 1) // If wrong no. args
+        {
+            // Inform user and exit
             System.out.println("Usage: java EchoSamplesPlayer <clip file>");
             System.exit(0);
         }
 
-        createInput("sounds/" + args[0]);
+        createInput("sounds/" + args[0]); // create an input from the passed in argument
 
-        if (!isRequiredFormat()) {    // not in SamplesPlayer
+        if (!isRequiredFormat())  // If the input is not the required format
+        {   // Inform user and exit
             System.out.println("Format unsuitable for echoing");
             System.exit(0);
         }
 
-        createOutput();
+        createOutput(); // now create the output based on the input sound
 
-        int numBytes = (int) (stream.getFrameLength() * format.getFrameSize());
+        int numBytes = (int) (stream.getFrameLength() * format.getFrameSize()); // Get the number of bytes in the input
 
-        byte[] samples = getSamples(numBytes);
-        play(samples);
+        byte[] samples = getSamples(numBytes); // create an array of bytes
+        play(samples); // play the samples back
 
     } // end of main()
 
@@ -67,23 +63,24 @@ public class EchoSamplesPlayer {
 
             // convert ULAW/ALAW formats to PCM format
             if ((format.getEncoding() == AudioFormat.Encoding.ULAW) ||
-                    (format.getEncoding() == AudioFormat.Encoding.ALAW)) {
+                    (format.getEncoding() == AudioFormat.Encoding.ALAW))
+            {
                 AudioFormat newFormat =
                         new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
                                 format.getSampleRate(),
                                 format.getSampleSizeInBits() * 2,
                                 format.getChannels(),
                                 format.getFrameSize() * 2,
-                                format.getFrameRate(), true);  // big endian
+                                format.getFrameRate(), true);  // want to use big endian format
                 // update stream and format details
                 stream = AudioSystem.getAudioInputStream(newFormat, stream);
                 System.out.println("Converted Audio format: " + newFormat);
                 format = newFormat;
             }
-        } catch (UnsupportedAudioFileException e) {
-            System.out.println(e.getMessage());
-            System.exit(0);
-        } catch (IOException e) {
+        }
+        // Error handling
+        catch (UnsupportedAudioFileException | IOException e)
+        {
             System.out.println(e.getMessage());
             System.exit(0);
         }
@@ -120,13 +117,17 @@ public class EchoSamplesPlayer {
     private static byte[] getSamples(int numBytes)
   /* Load all the samples from the AudioInputStream as a single 
      byte array. Return a _modified_ byte array, after the
-     echo effect has been applied. */ {
+     echo effect has been applied. */
+  {
         // read the entire stream into samples[]
         byte[] samples = new byte[numBytes];
         DataInputStream dis = new DataInputStream(stream);
-        try {
+        try
+        {
             dis.readFully(samples);
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             System.out.println(e.getMessage());
             System.exit(0);
         }
@@ -152,7 +153,8 @@ public class EchoSamplesPlayer {
         short sample, newSample;
         byte[] newSamples = new byte[numBytes * numTimes];
 
-        for (int j = 0; j < numTimes; j++) {
+        for (int j = 0; j < numTimes; j++)
+        {
             for (int i = 0; i < numBytes; i++)
                 newSamples[i + (numBytes * j)] = echoSample(samples[i], currDecay);
             currDecay *= DECAY;
@@ -195,7 +197,7 @@ public class EchoSamplesPlayer {
         // byte array --> stream
         InputStream source = new ByteArrayInputStream(samples);
 
-        int numRead = 0;
+        int numRead;
         byte[] buf = new byte[line.getBufferSize()];
 
         line.start();

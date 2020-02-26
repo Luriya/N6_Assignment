@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class ScreenManager {
 
-    private GraphicsDevice device;
+    private final GraphicsDevice device;
 
     /**
      *  Creates a new ScreenManager object.
@@ -40,13 +40,13 @@ public class ScreenManager {
         Returns the first compatible mode in a list of modes.
         Returns null if no modes are compatible.
     */
-    public DisplayMode findFirstCompatibleMode(DisplayMode modes[])
+    public DisplayMode findFirstCompatibleMode(DisplayMode[] modes)
     {
-        DisplayMode goodModes[] = device.getDisplayModes();
-        for (int i = 0; i < modes.length; i++) {
-            for (int j = 0; j < goodModes.length; j++) {
-                if (displayModesMatch(modes[i], goodModes[j])) {
-                    return modes[i];
+        DisplayMode[] goodModes = device.getDisplayModes();
+        for (DisplayMode mode : modes) {
+            for (DisplayMode goodMode : goodModes) {
+                if (displayModesMatch(mode, goodMode)) {
+                    return mode;
                 }
             }
 
@@ -90,6 +90,7 @@ public class ScreenManager {
             return false;
         }
 
+        //noinspection RedundantIfStatement
         if (mode1.getRefreshRate() !=
             DisplayMode.REFRESH_RATE_UNKNOWN &&
             mode2.getRefreshRate() !=
@@ -111,6 +112,7 @@ public class ScreenManager {
         <p>
         The display uses a BufferStrategy with 2 buffers.
     */
+    @SuppressWarnings("CatchMayIgnoreException")
     public void setFullScreen(DisplayMode displayMode) {
         final JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -133,16 +135,9 @@ public class ScreenManager {
         }
         // avoid potential deadlock in 1.4.1_02
         try {
-            EventQueue.invokeAndWait(new Runnable() {
-                public void run() {
-                    frame.createBufferStrategy(2);
-                }
-            });
+            EventQueue.invokeAndWait(() -> frame.createBufferStrategy(2));
         }
-        catch (InterruptedException ex) {
-            // ignore
-        }
-        catch (InvocationTargetException  ex) {
+        catch (InterruptedException | InvocationTargetException ex) {
             // ignore
         }
 
@@ -244,13 +239,13 @@ public class ScreenManager {
         Creates an image compatible with the current display.
     */
     public BufferedImage createCompatibleImage(int w, int h,
-        int transparancy)
+        int transparency)
     {
         Window window = device.getFullScreenWindow();
         if (window != null) {
             GraphicsConfiguration gc =
                 window.getGraphicsConfiguration();
-            return gc.createCompatibleImage(w, h, transparancy);
+            return gc.createCompatibleImage(w, h, transparency);
         }
         return null;
     }
