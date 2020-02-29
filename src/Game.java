@@ -67,6 +67,8 @@ public class Game extends GameCore implements ActionListener
 
     // The game TileMap
     private final TileMap tmap = new TileMap();    // Our tile map, note that we load it in init()
+    public float postX;
+    public float postY;
 
     // Images
     private Image bg; // The background image
@@ -109,8 +111,8 @@ public class Game extends GameCore implements ActionListener
     {
         Game gct = new Game(); // Create a new instance of Game
         gct.init("map1.txt"); // load the first map
-        Sound theme = new Sound("sounds/theme.wav"); // load theme
-        theme.playTheme(); // play theme
+//        Sound theme = new Sound("sounds/theme.wav"); // load theme
+//        theme.playTheme(); // play theme
         // Start in windowed mode with the given screen height and width
         // Useful game constants
         // width of the screen
@@ -361,9 +363,7 @@ public class Game extends GameCore implements ActionListener
             }
 
             player.setAnimationSpeed(1.0f); // set animation speed for the player
-
             checkTileCollision(player); // check for further tile collisions
-
 
             if (!touchingGround && player.getVelocityY() > 0)  // if not touching the ground and moving down
             {
@@ -394,21 +394,41 @@ public class Game extends GameCore implements ActionListener
 
             if (left) // if moving left
             {
-                player.setVelocityX(-0.2f); // move player to the left
-                if (touchingGround)
-                {
-                    player.setAnimation(running_left);
-                }
+                // variables for calculating future position
+                postX = player.getX() + player.getImage().getWidth(null);
+                postY = player.getY() + player.getImage().getHeight(null) / 2;
 
+                if (tmap.getTileChar((int) (postX - 0.02f), (int) postY) == 'g' || tmap.getTileChar((int) (postX - 0.02f), (int) postY) == 'k' || tmap.getTileChar((int) (postX - 0.02f), (int) postY) == 'q' || tmap.getTileChar((int) (postX - 0.02f), (int) postY) == 'p' || tmap.getTileChar((int) (postX - 0.02f), (int) postY) == 'u' || tmap.getTileChar((int) (postX - 0.02f), (int) postY) == 'o')
+                {
+                    player.setVelocityX(0);
+                }
+                else
+                {
+                    player.setVelocityX(-0.2f); // move player to the left
+                    if (touchingGround)
+                    {
+                        player.setAnimation(running_left);
+                    }
+                }
             }
             if (right) // if moving right
             {
-                player.setVelocityX(0.2f); // move player to the right
-                if (touchingGround)
-                {
-                    player.setAnimation(running_right);
-                }
+                // variables for calculating future position
+                postX = player.getX() + player.getImage().getWidth(null);
+                postY = player.getY() + player.getImage().getHeight(null) / 2;
 
+                if (tmap.getTileChar((int) (postX + 0.02f), (int) postY) == 'g' || tmap.getTileChar((int) (postX + 0.02f), (int) postY) == 's' || tmap.getTileChar((int) (postX + 0.02f), (int) postY) == 'q' || tmap.getTileChar((int) (postX + 0.02f), (int) postY) == 'p' || tmap.getTileChar((int) (postX + 0.02f), (int) postY) == 'u' || tmap.getTileChar((int) (postX + 0.02f), (int) postY) == 'w')
+                {
+                    player.setVelocityX(0);
+                }
+                else
+                {
+                    player.setVelocityX(0.2f); // move player to the right
+                    if (touchingGround)
+                    {
+                        player.setAnimation(running_right);
+                    }
+                }
             }
 
             if (jump && canJump && touchingGround) // if the player is in a position to be able to jump..
@@ -479,7 +499,6 @@ public class Game extends GameCore implements ActionListener
             {
                 handleTileMapCollisions(s, elapsed);
             }
-
             // Check for sprite collisions
             handleSpriteCollisions();
 
@@ -691,7 +710,7 @@ public class Game extends GameCore implements ActionListener
         int xcc = (int) (player.getX() - xc);
         int yc = tmap.getTileYC(tileX, tileY) - tmap.getTileHeight();
 
-        if (tmap.getTileChar(tileX, tileY) == 'g' || tmap.getTileChar(tileX, tileY) == 's' || tmap.getTileChar(tileX, tileY) == 'k' || tmap.getTileChar(tileX, tileY) == 'q' || tmap.getTileChar(tileX, tileY) == 'p' || tmap.getTileChar(tileX, tileY) == 'u' || tmap.getTileChar(tileX, tileY) == 'o' || tmap.getTileChar(tileX, tileY) == 'k') // If touching ground tile
+        if (tmap.getTileChar(tileX, tileY) == 'g' || tmap.getTileChar(tileX, tileY) == 's' || tmap.getTileChar(tileX, tileY) == 'q' || tmap.getTileChar(tileX, tileY) == 'p' || tmap.getTileChar(tileX, tileY) == 'u' || tmap.getTileChar(tileX, tileY) == 'k') // If touching ground tile
         {
             if (s.getVelocityY() > 0) // resets Y velocity to prevent falling through the ground
             {
@@ -845,19 +864,24 @@ public class Game extends GameCore implements ActionListener
         // if the tile above is a 'ground' tile
         if ((tmap.getTileChar(xT, yT) == 'g' || tmap.getTileChar(xT, yT) == 'u' || tmap.getTileChar(xT, yT) == 'w' || tmap.getTileChar(xT, yT) == 's' || tmap.getTileChar(xT, yT) == 'o' || tmap.getTileChar(xT, yT) == 'k' || tmap.getTileChar(xT, yT) == 'q' || tmap.getTileChar(xT, yT) == 'p') && sprite.getVelocityY() > 0) {
             sprite.setVelocityY(0); // stop the player
+            canJump = false; // prevents the player from being able to jump when right below a block; and from clipping out of the map
+        }
+        else
+        {
+            canJump = true;
         }
         // if the tile to the right is a wall tile
-        if ((tmap.getTileChar(xR, yR) == 'g' || tmap.getTileChar(xR, yR) == 'u' || tmap.getTileChar(xR, yR) == 'w' || tmap.getTileChar(xR, yR) == 's' || tmap.getTileChar(xR, yR) == 'o' || tmap.getTileChar(xR, yR) == 'k') && sprite.getVelocityX() > 0) {
+        while ((tmap.getTileChar(xR, yR) == 'g' || tmap.getTileChar(xR, yR) == 'u' || tmap.getTileChar(xR, yR) == 'w' || tmap.getTileChar(xR, yR) == 's' || tmap.getTileChar(xR, yR) == 'o' || tmap.getTileChar(xR, yR) == 'k') && sprite.getVelocityX() > 0) {
             sprite.setVelocityX(0); // stop player
             sprite.setX(xR * tmap.getTileWidth() - sprite.getImage().getWidth(null));
         }
         // if the tile to the left is a wall tile
-        if ((tmap.getTileChar(xL, yL) == 'g' || tmap.getTileChar(xL, yL) == 'u' || tmap.getTileChar(xL, yL) == 'w' || tmap.getTileChar(xL, yL) == 's' || tmap.getTileChar(xL, yL) == 'o' || tmap.getTileChar(xL, yL) == 'k') && sprite.getVelocityX() < 0) {
+        while ((tmap.getTileChar(xL, yL) == 'g' || tmap.getTileChar(xL, yL) == 'u' || tmap.getTileChar(xL, yL) == 'w' || tmap.getTileChar(xL, yL) == 's' || tmap.getTileChar(xL, yL) == 'o' || tmap.getTileChar(xL, yL) == 'k') && sprite.getVelocityX() < 0) {
             sprite.setVelocityX(0); // stop player
             sprite.setX(xL * tmap.getTileWidth() + tmap.getTileWidth());
         }
         // if the tile below is a 'ground' tile
-        if (tmap.getTileChar(xB, yB) == 'g' || tmap.getTileChar(xB, yB) == 'u' || tmap.getTileChar(xB, yB) == 'w' || tmap.getTileChar(xB, yB) == 's' || tmap.getTileChar(xB, yB) == 'o' || tmap.getTileChar(xB, yB) == 'k' || tmap.getTileChar(xB, yB) == 'q' || tmap.getTileChar(xB, yB) == 'p') {
+        if (tmap.getTileChar(xB, yB) == 'g' || tmap.getTileChar(xB, yB) == 'u' || tmap.getTileChar(xB, yB) == 's' || tmap.getTileChar(xB, yB) == 'k' || tmap.getTileChar(xB, yB) == 'q' || tmap.getTileChar(xB, yB) == 'p') {
             sprite.setVelocityY(0); // stop player
             sprite.shiftY(2); // move them up a little bit
         }
