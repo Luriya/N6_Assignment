@@ -157,7 +157,7 @@ public abstract class GameCore extends JFrame implements KeyListener,ActionListe
         // The virtual Graphics2D device associated with the above image
         Graphics2D bg = buffer.createGraphics();
         bg.setClip(0, 0, getWidth(), getHeight());
-        
+        setResizable(false); // disable the ability to resize the window
         while (isRunning) {
             // Elapsed time since previous check
             long elapsedTime = System.currentTimeMillis() - currTime;
@@ -169,7 +169,7 @@ public abstract class GameCore extends JFrame implements KeyListener,ActionListe
 	        // Get the current graphics device 	            
             g = (Graphics2D)win.getGraphics();
             
-            
+
 	        if (g != null)
 	        {
  	            if (fullScreen)
